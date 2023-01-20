@@ -2,6 +2,8 @@
 
 This library is a tool for handling different types of HTTP requests in a convenient way.
 
+[Document](https://gsm-msg.github.io/Emdpoint/documentation/emdpoint/)
+
 <br>
 
 ## Constents
