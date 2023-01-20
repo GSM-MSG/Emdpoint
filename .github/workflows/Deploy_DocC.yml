@@ -25,9 +25,9 @@ jobs:
         git merge master
     - name: Archive Docc
       run: |
-        xcodebuild clean docbuild -scheme Miniature \
+        xcodebuild clean docbuild -scheme Emdpoint \
         -destination generic/platform=iOS \
-        OTHER_DOCC_FLAGS="--transform-for-static-hosting --hosting-base-path Miniature --output-path docs"
+        OTHER_DOCC_FLAGS="--transform-for-static-hosting --hosting-base-path Emdpoint --output-path docs"
 
     - name: git commit & push
       run: |
