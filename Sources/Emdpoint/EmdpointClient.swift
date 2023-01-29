@@ -59,7 +59,7 @@ private extension EmdpointClient {
         var request = URLRequest(
             url: requestURL,
             cachePolicy: .reloadIgnoringLocalCacheData,
-            timeoutInterval: 30
+            timeoutInterval: endpoint.timeout
         )
         request.httpMethod = endpoint.route.method
 
