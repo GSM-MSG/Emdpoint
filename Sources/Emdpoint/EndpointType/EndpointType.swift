@@ -7,9 +7,11 @@ public protocol EndpointType {
     var task: HTTPTask { get }
     var validationCode: ClosedRange<Int> { get }
     var headers: [String: String]? { get }
+    var timeout: TimeInterval { get }
 }
 
 extension EndpointType {
     var sampleData: Data { .init() }
     var validationCode: ClosedRange<Int> { 200...300 }
+    var timeout: TimeInterval { 300 }
 }
