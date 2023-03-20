@@ -10,7 +10,7 @@ public protocol EndpointType {
     var timeout: TimeInterval { get }
 }
 
-extension EndpointType {
+public extension EndpointType {
     var sampleData: Data { .init() }
     var validationCode: ClosedRange<Int> { 200...300 }
     var timeout: TimeInterval { 300 }
