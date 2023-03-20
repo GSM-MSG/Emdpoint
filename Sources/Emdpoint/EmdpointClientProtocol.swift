@@ -6,8 +6,8 @@ public protocol EmdpointClientProtocol {
 
     func request(
         _ endpoint: Endpoint,
-        completion: @escaping (Result<DataResponse, Error>) -> Void
+        completion: @escaping (Result<DataResponse, EmdpointError>) -> Void
     )
     func request(_ endpoint: Endpoint) async throws -> DataResponse
-    func requestPublisher(_ endpoint: Endpoint) -> AnyPublisher<DataResponse, Error>
+    func requestPublisher(_ endpoint: Endpoint) -> AnyPublisher<DataResponse, EmdpointError>
 }
