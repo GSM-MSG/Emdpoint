@@ -107,7 +107,11 @@ private extension EmdpointClient {
             }
 
             if let response {
-                let dataResponse = DataResponse(data: data ?? .init(), response: response)
+                let dataResponse = DataResponse(
+                    request: request,
+                    data: data ?? .init(),
+                    response: response
+                )
                 self.interceptResponse(
                     response: .success(dataResponse),
                     endpoint: endpoint,
