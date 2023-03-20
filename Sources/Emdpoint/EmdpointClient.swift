@@ -109,7 +109,7 @@ private extension EmdpointClient {
             if let response {
                 let dataResponse = DataResponse(data: data ?? .init(), response: response)
                 self.interceptResponse(
-                    response: dataResponse,
+                    response: .success(dataResponse),
                     endpoint: endpoint,
                     using: self.interceptors,
                     completion: completion
@@ -157,14 +157,14 @@ private extension EmdpointClient {
     }
 
     func interceptResponse(
-        response: DataResponse,
+        response: Result<DataResponse, Error>,
         endpoint: EndpointType,
         using interceptors: [any InterceptorType],
         completion: (Result<DataResponse, Error>) -> Void
     ) {
         var pendingInterceptors = interceptors
         guard !pendingInterceptors.isEmpty else {
-            completion(.success(response))
+            completion(response)
             return
         }
 
@@ -178,14 +178,19 @@ private extension EmdpointClient {
             switch result {
             case let .success(newResponse):
                 self.interceptResponse(
-                    response: newResponse,
+                    response: .success(newResponse),
                     endpoint: endpoint,
                     using: pendingInterceptors,
                     completion: completion
                 )
 
             case let .failure(error):
-                completion(.failure(error))
+                self.interceptResponse(
+                    response: .failure(error),
+                    endpoint: endpoint,
+                    using: pendingInterceptors,
+                    completion: completion
+                )
             }
         }
     }

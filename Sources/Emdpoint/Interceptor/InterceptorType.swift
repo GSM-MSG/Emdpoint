@@ -8,11 +8,11 @@ public protocol InterceptorType {
     )
     func willRequest(_ request: URLRequest, endpoint: EndpointType)
     func process(
-        _ result: DataResponse,
+        _ result: Result<DataResponse, Error>,
         endpoint: EndpointType,
         completion: (Result<DataResponse, Error>) -> Void
     )
-    func didReceive(_ result: DataResponse, endpoint: EndpointType)
+    func didReceive(_ result: Result<DataResponse, Error>, endpoint: EndpointType)
 }
 
 public extension InterceptorType {
@@ -23,9 +23,9 @@ public extension InterceptorType {
     ) { completion(.success(request)) }
     func willRequest(_ request: URLRequest, endpoint: EndpointType) { }
     func process(
-        _ result: DataResponse,
+        _ result: Result<DataResponse, Error>,
         endpoint: EndpointType,
         completion: (Result<DataResponse, Error>) -> Void
-    ) { completion(.success(result)) }
-    func didReceive(_ result: DataResponse, endpoint: EndpointType) { }
+    ) { completion(result) }
+    func didReceive(_ result: Result<DataResponse, Error>, endpoint: EndpointType) { }
 }
