@@ -22,7 +22,7 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
 
     public func request(
         _ endpoint: Endpoint,
-        completion: @escaping (Result<DataResponse, Error>) -> Void
+        completion: @escaping (Result<DataResponse, EmdpointError>) -> Void
     ) {
         do {
             let request = try configureURLRequest(from: endpoint)
@@ -59,7 +59,7 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
 
     public func requestPublisher(
         _ endpoint: Endpoint
-    ) -> AnyPublisher<DataResponse, Error> {
+    ) -> AnyPublisher<DataResponse, EmdpointError> {
         Future { fulfill in
             self.request(endpoint) { result in
                 fulfill(result)
@@ -98,7 +98,7 @@ private extension EmdpointClient {
     func requestNetworking(
         _ request: URLRequest,
         endpoint: Endpoint,
-        completion: @escaping (Result<DataResponse, Error>) -> Void
+        completion: @escaping (Result<DataResponse, EmdpointError>) -> Void
     ) {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
@@ -161,10 +161,10 @@ private extension EmdpointClient {
     }
 
     func interceptResponse(
-        response: Result<DataResponse, Error>,
+        response: Result<DataResponse, EmdpointError>,
         endpoint: EndpointType,
         using interceptors: [any InterceptorType],
-        completion: (Result<DataResponse, Error>) -> Void
+        completion: (Result<DataResponse, EmdpointError>) -> Void
     ) {
         var pendingInterceptors = interceptors
         guard !pendingInterceptors.isEmpty else {
