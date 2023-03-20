@@ -40,12 +40,12 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
                     self.requestNetworking(request, endpoint: endpoint, completion: completion)
 
                 case let .failure(error):
-                    completion(.failure(error))
+                    completion(.failure(EmdpointError.underlying(error)))
                 }
             }
             
         } catch {
-            completion(.failure(error))
+            completion(.failure(EmdpointError.underlying(error)))
         }
     }
 
@@ -102,7 +102,7 @@ private extension EmdpointClient {
     ) {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
-                completion(.failure(error))
+                completion(.failure(EmdpointError.underlying(error)))
                 return
             }
 
@@ -155,7 +155,7 @@ private extension EmdpointClient {
                 )
 
             case let .failure(error):
-                completion(.failure(error))
+                completion(.failure(EmdpointError.underlying(error)))
             }
         }
     }
@@ -190,7 +190,7 @@ private extension EmdpointClient {
 
             case let .failure(error):
                 self.interceptResponse(
-                    response: .failure(error),
+                    response: .failure(EmdpointError.underlying(error)),
                     endpoint: endpoint,
                     using: pendingInterceptors,
                     completion: completion
