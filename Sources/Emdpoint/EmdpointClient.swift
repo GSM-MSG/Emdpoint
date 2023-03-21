@@ -168,6 +168,12 @@ private extension EmdpointClient {
     ) {
         var pendingInterceptors = interceptors
         guard !pendingInterceptors.isEmpty else {
+            if case let .success(response) = response,
+               let httpResponse = response.response as? HTTPURLResponse,
+               !(endpoint.validationCode ~= httpResponse.statusCode) {
+                completion(.failure(EmdpointError.statusCode(httpResponse)))
+                return
+            }
             completion(response)
             return
         }
