@@ -30,7 +30,7 @@ extension EmdpointError: LocalizedError {
 }
 
 extension EmdpointError {
-    var underlyingError: Swift.Error? {
+    public var underlyingError: Swift.Error? {
         switch self {
         case let .underlying(error):
             return error
@@ -42,7 +42,7 @@ extension EmdpointError {
 }
 
 extension EmdpointError {
-    var response: DataResponse? {
+    public var response: DataResponse? {
         switch self {
         case let .statusCode(response):
             return response
