@@ -4,7 +4,7 @@ public enum EmdpointError: Error {
     case encodingFailed
     case networkError
     case notFoundOwner
-    case statusCode(HTTPURLResponse)
+    case statusCode(DataResponse)
     case underlying(Swift.Error)
 }
 
@@ -34,6 +34,18 @@ extension EmdpointError {
         switch self {
         case let .underlying(error):
             return error
+
+        default:
+            return nil
+        }
+    }
+}
+
+extension EmdpointError {
+    var response: DataResponse? {
+        switch self {
+        case let .statusCode(response):
+            return response
 
         default:
             return nil
