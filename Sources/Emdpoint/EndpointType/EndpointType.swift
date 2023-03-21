@@ -12,6 +12,6 @@ public protocol EndpointType {
 
 public extension EndpointType {
     var sampleData: Data { .init() }
-    var validationCode: ClosedRange<Int> { 200...300 }
+    var validationCode: ClosedRange<Int> { 200...500 }
     var timeout: TimeInterval { 300 }
 }
