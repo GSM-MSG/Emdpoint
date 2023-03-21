@@ -171,7 +171,7 @@ private extension EmdpointClient {
             if case let .success(response) = response,
                let httpResponse = response.response as? HTTPURLResponse,
                !(endpoint.validationCode ~= httpResponse.statusCode) {
-                completion(.failure(EmdpointError.statusCode(httpResponse)))
+                completion(.failure(EmdpointError.statusCode(response)))
                 return
             }
             completion(response)
@@ -190,7 +190,7 @@ private extension EmdpointClient {
                 if let httpResponse = newResponse.response as? HTTPURLResponse,
                    !(endpoint.validationCode ~= httpResponse.statusCode) {
                     self.interceptResponse(
-                        response: .failure(EmdpointError.statusCode(httpResponse)),
+                        response: .failure(EmdpointError.statusCode(newResponse)),
                         endpoint: endpoint,
                         using: pendingInterceptors,
                         completion: completion
