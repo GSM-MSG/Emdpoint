@@ -112,6 +112,11 @@ private extension EmdpointClient {
                     data: data ?? .init(),
                     response: response
                 )
+                if let httpResponse = response as? HTTPURLResponse,
+                   !(endpoint.validationCode ~= httpResponse.statusCode) {
+                    completion(.failure(EmdpointError.statusCode(httpResponse)))
+                    return
+                }
                 self.interceptResponse(
                     response: .success(dataResponse),
                     endpoint: endpoint,
