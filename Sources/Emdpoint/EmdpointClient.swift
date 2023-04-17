@@ -4,7 +4,7 @@ import Foundation
 public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtocol {
     private var interceptors: [any InterceptorType] = []
 
-    public init(interceptors: [any InterceptorType]) {
+    public init(interceptors: [any InterceptorType] = []) {
         self.interceptors = interceptors
     }
 
