@@ -77,12 +77,7 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
 
 private extension EmdpointClient {
     func configureURLRequest(from endpoint: Endpoint) throws -> URLRequest {
-        var requestURL: URL
-        if #available(iOS 16.0, *) {
-            requestURL = endpoint.baseURL.appending(path: endpoint.route.path)
-        } else {
-            requestURL = endpoint.baseURL.appendingPathComponent(endpoint.route.path)
-        }
+        let requestURL: URL = URL(endpoint: endpoint)
         var request = URLRequest(
             url: requestURL,
             cachePolicy: .reloadIgnoringLocalCacheData,
