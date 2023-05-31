@@ -134,7 +134,7 @@ private extension EmdpointClient {
         _ request: URLRequest,
         endpoint: EndpointType,
         using interceptors: [any InterceptorType],
-        completion: (Result<URLRequest, Error>) -> Void
+        completion: @escaping (Result<URLRequest, Error>) -> Void
     ) {
         var pendingInterceptors = interceptors
         guard !pendingInterceptors.isEmpty else {
@@ -168,7 +168,7 @@ private extension EmdpointClient {
         response: Result<DataResponse, EmdpointError>,
         endpoint: EndpointType,
         using interceptors: [any InterceptorType],
-        completion: (Result<DataResponse, EmdpointError>) -> Void
+        completion: @escaping (Result<DataResponse, EmdpointError>) -> Void
     ) {
         var pendingInterceptors = interceptors
         guard !pendingInterceptors.isEmpty else {
