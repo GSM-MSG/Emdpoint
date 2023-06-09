@@ -42,6 +42,7 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
                 case let .failure(error):
                     if let emdpointError = error as? EmdpointError {
                         completion(.failure(emdpointError))
+                        return
                     }
                     completion(.failure(EmdpointError.underlying(error)))
                 }
@@ -50,6 +51,7 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
         } catch {
             if let emdpointError = error as? EmdpointError {
                 completion(.failure(emdpointError))
+                return
             }
             completion(.failure(EmdpointError.underlying(error)))
         }
@@ -103,6 +105,7 @@ private extension EmdpointClient {
             if let error {
                 if let emdpointError = error as? EmdpointError {
                     completion(.failure(emdpointError))
+                    return
                 }
                 completion(.failure(EmdpointError.underlying(error)))
                 return
