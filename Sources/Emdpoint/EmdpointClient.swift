@@ -57,18 +57,16 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
 
     public func request(_ endpoint: Endpoint) async throws -> DataResponse {
         try await withCheckedThrowingContinuation { config in
-            self.request(endpoint) { result in
-                config.resume(with: result)
-            }
+            self.request(endpoint, completion: config.resume(with:))
         }
     }
 
     public func requestPublisher(
         _ endpoint: Endpoint
     ) -> AnyPublisher<DataResponse, EmdpointError> {
-        Future { fulfill in
-            self.request(endpoint) { result in
-                fulfill(result)
+        Deferred {
+            Future { fulfill in
+                self.request(endpoint, completion: fulfill)
             }
         }
         .eraseToAnyPublisher()
