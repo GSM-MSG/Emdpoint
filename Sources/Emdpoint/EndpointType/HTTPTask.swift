@@ -71,11 +71,11 @@ public extension HTTPTask {
         boundary: String
     ) -> Data {
         var formBody = Data()
-        let boundaryPrefix = "--\(boundary)\r\n"
+        let boundaryPrefix = "\r\n--\(boundary)\r\n"
         for formData in formDatas {
             formBody.append(boundaryPrefix.data(using: .utf8) ?? .init())
             if let filename = formData.fileName, !filename.isEmpty {
-                formBody.append("Content-Disposition: form-data; name=\"\(formData.field)\"; filename=\"\(filename)\"\r\n\r\n".data(using: .utf8) ?? .init())
+                formBody.append("Content-Disposition: form-data; name=\"\(formData.field)\"; filename=\"\(filename)\"\r\n".data(using: .utf8) ?? .init())
             } else {
                 formBody.append("Content-Disposition: form-data; name=\"\(formData.field)\"\r\n\r\n".data(using: .utf8) ?? .init())
             }
