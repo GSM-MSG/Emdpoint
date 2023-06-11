@@ -71,7 +71,7 @@ public extension HTTPTask {
         boundary: String
     ) -> Data {
         var formBody = Data()
-        let boundaryPrefix = "\r\n--\(boundary)\r\n"
+        let boundaryPrefix = "--\(boundary)\r\n"
         for formData in formDatas {
             formBody.append(boundaryPrefix.data(using: .utf8) ?? .init())
             if let filename = formData.fileName, !filename.isEmpty {
@@ -86,7 +86,7 @@ public extension HTTPTask {
             formBody.append(formData.data)
             formBody.append("\r\n".data(using: .utf8) ?? .init())
         }
-        formBody.append(boundaryPrefix.data(using: .utf8) ?? .init())
+        formBody.append("--\(boundary)--".data(using: .utf8) ?? .init())
         return formBody
     }
 }
