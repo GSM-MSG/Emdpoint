@@ -76,13 +76,13 @@ public extension HTTPTask {
             formBody.append(boundaryPrefix.data(using: .utf8) ?? .init())
             if let filename = formData.fileName, !filename.isEmpty {
                 formBody.append("Content-Disposition: form-data; name=\"\(formData.field)\"; filename=\"\(filename)\"\r\n".data(using: .utf8) ?? .init())
+                formBody.append(
+                    "Content-Type: image/\(filename.components(separatedBy: ".").last ?? "png")\r\n\r\n"
+                        .data(using: .utf8) ?? .init()
+                )
             } else {
                 formBody.append("Content-Disposition: form-data; name=\"\(formData.field)\"\r\n\r\n".data(using: .utf8) ?? .init())
             }
-            formBody.append(
-                "Content-Type: image/\(formData.fileName?.components(separatedBy: ".").last ?? "png")\r\n\r\n"
-                    .data(using: .utf8) ?? .init()
-            )
             formBody.append(formData.data)
             formBody.append("\r\n".data(using: .utf8) ?? .init())
         }
