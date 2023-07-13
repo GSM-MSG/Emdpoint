@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtocol {
+open class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtocol {
     private var interceptors: [any InterceptorType] = []
 
     public init(interceptors: [any InterceptorType] = []) {
@@ -20,7 +20,7 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
         self.interceptors.removeAll()
     }
 
-    public func request(
+    open func request(
         _ endpoint: Endpoint,
         completion: @escaping (Result<DataResponse, EmdpointError>) -> Void
     ) {
@@ -57,13 +57,13 @@ public final class EmdpointClient<Endpoint: EndpointType>: EmdpointClientProtoco
         }
     }
 
-    public func request(_ endpoint: Endpoint) async throws -> DataResponse {
+    open func request(_ endpoint: Endpoint) async throws -> DataResponse {
         try await withCheckedThrowingContinuation { config in
             self.request(endpoint, completion: config.resume(with:))
         }
     }
 
-    public func requestPublisher(
+    open func requestPublisher(
         _ endpoint: Endpoint
     ) -> AnyPublisher<DataResponse, EmdpointError> {
         Deferred {
