@@ -99,13 +99,13 @@ private extension URLQueryEncoder {
     }
 
     func query(_ parameters: [String: Any]) -> String {
-        var components: [(String, String)] = []
-
-        for key in parameters.keys.sorted(by: <) {
-            let value = parameters[key]!
-            components += queryComponents(fromKey: key, value: value)
-        }
-        return components.map { "\($0)=\($1)" }.joined(separator: "&")
+        return parameters
+            .reduce(into: [(String, String)]()) { partialResult, dict in
+                let queryComponents = queryComponents(fromKey: dict.key, value: dict.value)
+                partialResult.append(contentsOf: queryComponents)
+            }
+            .map { "\($0)=\($1)" }
+            .joined(separator: "&")
     }
 }
 
