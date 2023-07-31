@@ -47,7 +47,7 @@ public struct URLQueryEncoder: ParameterEncodable {
     public let arrayEncoding: ArrayEncoding
     public let boolEncoding: BoolEncoding
 
-    init(arrayEncoding: ArrayEncoding = .noBrackets, boolEncoding: BoolEncoding = .literal) {
+    public init(arrayEncoding: ArrayEncoding = .noBrackets, boolEncoding: BoolEncoding = .literal) {
         self.arrayEncoding = arrayEncoding
         self.boolEncoding = boolEncoding
     }
