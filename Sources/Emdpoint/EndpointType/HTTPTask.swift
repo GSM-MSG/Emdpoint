@@ -2,8 +2,18 @@ import Foundation
 
 public enum HTTPTask {
     case requestPlain
-    case requestParameters(body: [String: Any]? = nil, query: [String: Any]? = nil)
-    case requestJSONEncodable(_ encodable: any Encodable, query: [String: Any]? = nil)
+    case requestParameters(
+        body: [String: Any]? = nil,
+        bodyEncoder: any ParameterEncodable = .json(),
+        query: [String: Any]? = nil,
+        queryEncoder: any ParameterEncodable = .urlQuery()
+    )
+    case requestJSONEncodable(
+        _ encodable: any Encodable,
+        jsonEncoder: JSONEncoder = .init(),
+        query: [String: Any]? = nil,
+        queryEncoder: any ParameterEncodable = .urlQuery()
+    )
     case uploadMultipart([MultiPartFormData])
 }
 
@@ -13,11 +23,17 @@ public extension HTTPTask {
         case .requestPlain:
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        case let .requestParameters(body, query):
-            try configureParams(body: body, query: query, request: &request)
+        case let .requestParameters(body, bodyEncoder, query, queryEncoder):
+            try configureParams(body: body, bodyEncoder: bodyEncoder, query: query, queryEncoder: queryEncoder, request: &request)
 
-        case let .requestJSONEncodable(encodable, query):
-            try configureEncodable(encodable: encodable, query: query, request: &request)
+        case let .requestJSONEncodable(encodable, jsonEncoder, query, queryEncoder):
+            try configureEncodable(
+                encodable: encodable,
+                jsonEncoder: jsonEncoder,
+                query: query,
+                queryEncoder: queryEncoder,
+                request: &request
+            )
 
         case let .uploadMultipart(multiParts):
             try configureMultiparts(formDatas: multiParts, request: &request)
@@ -26,28 +42,31 @@ public extension HTTPTask {
 
     func configureParams(
         body: [String: Any]?,
+        bodyEncoder: any ParameterEncodable,
         query: [String: Any]?,
+        queryEncoder: any ParameterEncodable,
         request: inout URLRequest
     ) throws {
         if let body {
-            try JSONParameterEncoder.encode(request: &request, with: body)
+            try bodyEncoder.encode(request: &request, with: body)
         }
         if let query {
-            try URLQueryEncoder.encode(request: &request, with: query)
+            try queryEncoder.encode(request: &request, with: query)
         }
     }
 
     func configureEncodable(
         encodable: any Encodable,
+        jsonEncoder: JSONEncoder,
         query: [String: Any]?,
+        queryEncoder: any ParameterEncodable,
         request: inout URLRequest
     ) throws {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let encoder = JSONEncoder()
-        request.httpBody = try encoder.encode(encodable)
+        request.httpBody = try jsonEncoder.encode(encodable)
 
         if let query {
-            try URLQueryEncoder.encode(request: &request, with: query)
+            try queryEncoder.encode(request: &request, with: query)
         }
     }
 

@@ -4,6 +4,7 @@ public enum EmdpointError: Error {
     case encodingFailed
     case networkError
     case notFoundOwner
+    case missingURL
     case statusCode(DataResponse)
     case underlying(Swift.Error)
 }
@@ -19,6 +20,9 @@ extension EmdpointError: LocalizedError {
 
         case .notFoundOwner:
             return "this error occured arc"
+
+        case .missingURL:
+            return "URL is missing"
 
         case .statusCode:
             return "status code didn't fall within the given range."
