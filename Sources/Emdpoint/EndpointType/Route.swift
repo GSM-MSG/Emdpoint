@@ -4,6 +4,7 @@ public enum Route {
     case get(String)
     case head(String)
     case post(String)
+    case put(String)
     case patch(String)
     case delete(String)
     case options(String)
@@ -20,6 +21,9 @@ public enum Route {
 
         case .post:
             return "POST"
+
+        case .put:
+            return "PUT"
 
         case .patch:
             return "PATCH"
@@ -43,6 +47,7 @@ public enum Route {
         case let .get(path),
             let .head(path),
             let .post(path),
+            let .put(path),
             let .patch(path),
             let .delete(path),
             let .options(path),
